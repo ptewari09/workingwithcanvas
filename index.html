@@ -1,23 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Canvas</title>
-        <style type="text/css">
-            canvas{
-                border: 2px solid black;
-                background: yellow;
-                
-            }
-            body{
-                margin: 0;
-            }
+<head>
+    <meta charset="UTF-8">
+    <title>Diamond Pattern</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
 
-        </style>
-    </head>
-    <body>
-        <canvas></canvas>
-        <script src="canvas.js"></script>
+        form {
+            margin-bottom: 20px;
+            text-align: center;
+        }
 
-    </body>
+        input[type="number"] {
+            padding: 10px;
+            font-size: 18px;
+            width: 150px;
+            text-align: center;
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 10px 25px;
+            font-size: 18px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        canvas {
+            border: 2px solid black;
+            background: yellow;
+        }
+    </style>
+</head>
+<body>
+    <form id="diamondForm">
+        <label for="rowsInput" style="font-size: 18px; margin-right: 10px;">Enter Diamond Rows:</label>
+        <input type="number" id="rowsInput" min="1" value="5">
+        <button type="submit">Generate Diamond</button>
+    </form>
+    <canvas></canvas>
+    <script src="canvas.js"></script>
+</body>
 </html>
