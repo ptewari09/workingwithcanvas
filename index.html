@@ -7,11 +7,12 @@
         body {
             margin: 0;
             display: flex;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
             flex-direction: column;
             height: 100vh;
             background-color: #f4f4f4;
+            padding-top: 50px; 
         }
 
         form {
@@ -19,16 +20,19 @@
             text-align: center;
         }
 
-        input[type="number"] {
+        input[type="text"], select {
             padding: 10px;
             font-size: 18px;
-            width: 150px;
+            width: 120px;
             text-align: center;
             margin-right: 10px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+            outline: none;
         }
 
         button {
-            padding: 10px 25px;
+            padding: 12px 30px;
             font-size: 18px;
             cursor: pointer;
             background-color: #4CAF50;
@@ -40,16 +44,82 @@
         canvas {
             border: 2px solid black;
             background: yellow;
+            margin-top: 30px;
+        }
+
+        .form-field {
+            margin-bottom: 15px;
+        }
+
+        .size-field {
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .size-field span {
+            font-size: 18px;
+            margin: 0 10px;
+        }
+
+        label {
+            font-size: 18px;
+            margin-right: 10px;
+        }
+
+        .scale-buttons {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            width: 50%;
+        }
+
+        .scale-buttons button {
+            margin: 0 5px;
+            background-color: #007BFF;
+        }
+
+        #rotateButton {
+            margin-top: 20px;
+            background-color: #FF5733;
         }
     </style>
 </head>
 <body>
     <form id="diamondForm">
-        <label for="rowsInput" style="font-size: 18px; margin-right: 10px;">Enter Diamond Rows:</label>
-        <input type="number" id="rowsInput" min="1" value="5">
-        <button type="submit">Generate Diamond</button>
+        <div class="form-field">
+            <label for="kolamType">Kolam Type:</label>
+            <select id="kolamType">
+                <option value="square">Square</option>
+                <option value="nerpulli">Nerpulli (Diamond Straight)</option>
+                <option value="idaipulli">Idaipulli (Diamond In Between)</option>
+                <option value="circular">Circular</option>
+                <option value="house">House</option>
+                <option value="custom">Custom</option>
+            </select>
+        </div>
+        
+        <div class="form-field" id="customShapeField" style="display: none;">
+            <label for="customShape">Enter Custom Shape:</label>
+            <input type="text" id="customShape" placeholder="e.g., heart, tree, star" />
+        </div>
+
+        <div class="form-field size-field">
+            <label>Grid Size:</label>
+            <input type="text" id="gridSize" placeholder="5x1" required>
+        </div>
+
+        <button type="submit">Generate Pattern</button>
+        <button type="button" id="printButton">Print Pattern</button>
     </form>
-    <canvas></canvas>
+
+    <div class="scale-buttons">
+        <button id="increaseScale">Increase Scale</button>
+        <button id="decreaseScale">Decrease Scale</button>
+    </div>
+
+    <button type="button" id="rotateButton">Rotate 90°</button>
+
+    <canvas id="kolamCanvas" width="800" height="600"></canvas>
     <script src="canvas.js"></script>
 </body>
 </html>
