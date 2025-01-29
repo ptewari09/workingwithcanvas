@@ -1,3 +1,4 @@
+
 const canvas = document.getElementById('kolamCanvas');
 const c = canvas.getContext('2d');
 
@@ -24,66 +25,80 @@ function drawPattern(kolamType, gridSize, dotRadius) {
 
     switch (kolamType) {
         case 'square':
-            for (let i = 0; i < startingDots; i++) {
-                for (let j = 0; j < maxDots; j++) {
-                    const x = centerX - (maxDots / 2 - j) * horizontalSpacing;
-                    const y = centerY - (startingDots / 2 - i) * verticalSpacing;
-                    drawDot(x, y, scaledDotRadius, 'black');
-                }
+    // Increase the spacing between dots while maintaining square shape
+    const squareSpacing = dotRadius * 6 * scale; // Increased spacing (was 4, now 6)
+
+    for (let i = 0; i < startingDots; i++) {
+        for (let j = 0; j < maxDots; j++) {
+            const x = centerX - (maxDots / 2 - j) * squareSpacing;
+            const y = centerY - (startingDots / 2 - i) * squareSpacing;
+            drawDot(x, y, scaledDotRadius, 'black');
+        }
+    }
+    break;
+
+
+    case 'nerpulli':
+        const totalRowsNerupulli = maxDots - startingDots + 1;
+        const midRowNerupulli = Math.floor(totalRowsNerupulli / 2);
+    
+        // Set equal horizontal and vertical spacing for a regular rhombus
+        const rhombusSpacing = dotRadius * 6 * scale;  // Adjust this value if necessary
+    
+        for (let row = 0; row < totalRowsNerupulli; row++) {
+            let dots;
+    
+            if (row === 0 || row === totalRowsNerupulli - 1) {
+                dots = startingDots;
+            } else if (row === midRowNerupulli) {
+                dots = maxDots;
+            } else if (row < midRowNerupulli) {
+                dots = startingDots + row * 2;
+            } else {
+                dots = startingDots + (totalRowsNerupulli - row - 1) * 2;
             }
-            break;
-
-        case 'nerpulli':
-            const totalRowsNerupulli = maxDots - startingDots + 1;
-            const midRowNerupulli = Math.floor(totalRowsNerupulli / 2);
-
-            for (let row = 0; row < totalRowsNerupulli; row++) {
-                let dots;
-
-                if (row === 0 || row === totalRowsNerupulli - 1) {
-                    dots = startingDots;
-                } else if (row === midRowNerupulli) {
-                    dots = maxDots;
-                } else if (row < midRowNerupulli) {
-                    dots = startingDots + row * 2;
-                } else {
-                    dots = startingDots + (totalRowsNerupulli - row - 1) * 2;
-                }
-
-                dots = Math.min(dots, maxDots);
-
-                const y = centerY - verticalSpacing * (row - midRowNerupulli);
-                const startX = centerX - horizontalSpacing * (dots - 1) / 2;
-
-                for (let col = 0; col < dots; col++) {
-                    drawDot(startX + col * horizontalSpacing, y, scaledDotRadius, 'black');
-                }
+    
+            dots = Math.min(dots, maxDots);
+    
+            const y = centerY - rhombusSpacing * (row - midRowNerupulli);
+            const startX = centerX - rhombusSpacing * (dots - 1) / 2;
+    
+            for (let col = 0; col < dots; col++) {
+                drawDot(startX + col * rhombusSpacing, y, scaledDotRadius, 'black');
             }
-            break;
-
+        }
+        break;
+    
         case 'idaipulli':
-            const totalRowsIdaipulli = 2 * (maxDots - startingDots) + 1;
-            const compactHorizontalSpacing = horizontalSpacing * 1.5;
-            const compactVerticalSpacing = verticalSpacing * 0.6;
+    const totalRows = 2 * (maxDots - startingDots) + 1;
+    const adjustedHorizontalSpacing = horizontalSpacing * 2; // Increased horizontal spacing
+    const adjustedVerticalSpacing = verticalSpacing * 0.6; // Reduced vertical spacing
 
-            for (let row = 0; row <= maxDots - startingDots; row++) {
-                const numDots = startingDots + row;
-                const y = centerY - compactVerticalSpacing * (maxDots - startingDots - row);
-                const startX = centerX - compactHorizontalSpacing * (numDots - 1) / 2;
-                for (let col = 0; col < numDots; col++) {
-                    drawDot(startX + col * compactHorizontalSpacing, y, scaledDotRadius, 'black');
-                }
-            }
+    // Upper half of the rhombus (including center row)
+    for (let row = 0; row <= maxDots - startingDots; row++) {
+        const numDots = startingDots + row;
+        const y = centerY - adjustedVerticalSpacing * (maxDots - startingDots - row);
+        const startX = centerX - adjustedHorizontalSpacing * (numDots - 1) / 2;
+        for (let col = 0; col < numDots; col++) {
+            drawDot(startX + col * adjustedHorizontalSpacing, y, scaledDotRadius, 'black');
+        }
+    }
 
-            for (let row = 1; row <= maxDots - startingDots; row++) {
-                const numDots = maxDots - row;
-                const y = centerY + compactVerticalSpacing * row;
-                const startX = centerX - compactHorizontalSpacing * (numDots - 1) / 2;
-                for (let col = 0; col < numDots; col++) {
-                    drawDot(startX + col * compactHorizontalSpacing, y, scaledDotRadius, 'black');
-                }
-            }
-            break;
+    // Lower half of the rhombus
+    for (let row = 1; row <= maxDots - startingDots; row++) {
+        const numDots = maxDots - row;
+        const y = centerY + adjustedVerticalSpacing * row;
+        const startX = centerX - adjustedHorizontalSpacing * (numDots - 1) / 2;
+        for (let col = 0; col < numDots; col++) {
+            drawDot(startX + col * adjustedHorizontalSpacing, y, scaledDotRadius, 'black');
+        }
+    }
+    break;
+
+
+        
+
+
 
         case 'circular':
             const totalSpokes = startingDots;
@@ -206,6 +221,7 @@ function rotateCanvas() {
     const canvasHeight = canvas.height;
     
     rotationAngle += Math.PI / 2; // Increase rotation by 90 degrees
+    
     
     // Save the current context
     c.save();
